@@ -14,3 +14,6 @@ SRC := $(shell find src -name '*.js')
 .PHONY: $(SRC)
 $(SRC):
 	@node --no-warnings --experimental-modules $@
+
+http:
+	npx nodemon src/http.js
