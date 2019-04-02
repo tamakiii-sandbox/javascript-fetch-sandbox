@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 /*
  * SplitChunksPlugin is enabled by default and replaced
@@ -25,36 +26,27 @@ const path = require('path');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
+  mode: 'development',
+  entry: './src/index.ts',
+
+  resolve: {
+    extensions: ['.js', '.ts']
+  },
+
   module: {
     rules: [
       {
-        include: [path.resolve(__dirname, 'src')],
-        loader: 'babel-loader',
-
-        options: {
-          plugins: ['syntax-dynamic-import'],
-
-          presets: [
-            [
-              '@babel/preset-env',
-              {
-                modules: false
-              }
-            ]
-          ]
-        },
-
-        test: /\.js$/
+        test: /\.ts$/,
+        use: 'ts-loader',
       }
     ]
   },
 
   output: {
-    chunkFilename: '[name].[chunkhash].js',
-    filename: '[name].[chunkhash].js'
-  },
-
-  mode: 'development',
+		filename: '[name].js',
+		path: path.join(__dirname, 'dist'),
+		publicPath: '/'
+	},
 
   optimization: {
     splitChunks: {
@@ -70,5 +62,11 @@ module.exports = {
       minSize: 30000,
       name: true
     }
-  }
+  },
+
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: path.join(__dirname, 'template.html')
+    })
+  ]
 };
