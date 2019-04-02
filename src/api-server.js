@@ -107,6 +107,7 @@ router.post('/blog', (req, res) => {
 })
 
 const server = http.createServer((req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:8888')
   router(req, res, () => {
     res.statusCode = 404
     res.end(JSON.stringify({
